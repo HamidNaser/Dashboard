@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sessions Screen Specifications</title>
+<style>
+  img {
+    max-width: 80%;
+    height: auto;
+  }
+  .red-heading {
+    color: red;
+  }
+</style>
+</head>
+<body>
+<h1 class="red-heading">Sessions Screen</h1>
+
+<img src="C:\AdminImport\HelpFiles\SessionsScreen.png" alt="Sessions Screen">
+
+<h1>Open Help File Button <img src="C:\AdminImport\HelpFiles\SessionHelpButton.png" alt="Open Help Button"></h1>
+
+<h2>Description:</h2>
+<p>The help button allows users to open help file for current client by calling the <code>OpenHelpUrl</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Open help file from the table.</li>  
+  <li>Start an instance of web browser with the help file in it.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+  <code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+
+    const HelpButton = ({ clientId, sessionId }) => {
+      const [helpContent, setHelpContent] = useState('');
+      const [isLoading, setIsLoading] = useState(false);
+
+      const handleOpenHelpUrl = async () => {
+        setIsLoading(true);
+        try {
+          const apiUrl = 'https://localhost:5001/AdminApi/OpenHelpUrl';
+          const response = await axios.post(apiUrl, { clientId, sessionId });
+
+          setHelpContent(response.data);
+        } catch (error) {
+          console.error('Error fetching help content:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleDownload}&gt;Open Help&lt;/button&gt;
+          {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+        &lt;/div&gt;
+      );
+    };
+
+    export default HelpButton;
+  </code>
+</pre>
+
+
+<h1>Multi-function Download Session Results Button <img src="C:\AdminImport\HelpFiles\SessionResultsButton.png" alt="Session Results Button"></h1>
+
+
+<h2>Description:</h2>
+<p>The multi-function download button allows users to download session results from a table. When clicked, it calls the <code>DownloadSessionResults</code> API endpoint to retrieve the session results as a file.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Download session results from the table.</li>
+  <li>Display download progress using a progress bar.</li>
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const DownloadButton = () => {
+  const [progress, setProgress] = useState(0);
+
+  const handleDownload = async () => {
+    const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+    const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023';
+    const apiUrl = 'https://localhost:5001/AdminApi/DownloadSessionResults';
+
+    const response = await axios.post(apiUrl, { clientId, sessionId }, {
+      responseType: 'blob',
+      onDownloadProgress: (progressEvent) => {
+        const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+        setProgress(progress);
+      },
+    });
+
+    const blob = new Blob([response.data]);
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', 'file_name');
+    document.body.appendChild(link);
+    link.click();
+    setProgress(0);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleDownload}&gt;Download File&lt;/button&gt;
+      {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+    &lt;/div&gt;
+  );
+};
+
+export default DownloadButton;
+</code>
+</pre>
+
+
+
+<h1>Multi-function Download Session Input Button <img src="C:\AdminImport\HelpFiles\SessionInputButton.png" alt="Session Input Button"></h1>
+
+<h2>Description:</h2>
+<p>The session input button allows users to download session input by calling the <code>DownloadInput</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Download session input from the table.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const SessionInputButton = () => {
+  const [progress, setProgress] = useState(0);
+
+  const handleDownload = async () => {
+    const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+    const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023';
+    const apiUrl = 'https://localhost:5001/AdminApi/DownloadInput';
+
+    const response = await axios.post(apiUrl, { clientId, sessionId }, {
+      responseType: 'blob',
+      onDownloadProgress: (progressEvent) => {
+        const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+        setProgress(progress);
+      },
+    });
+
+    const blob = new Blob([response.data]);
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', 'input_file_name');
+    document.body.appendChild(link);
+    link.click();
+    setProgress(0);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleDownload}&gt;Download Input&lt;/button&gt;
+      {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+    &lt;/div&gt;
+  );
+};
+
+export default SessionInputButton;
+</code>
+</pre>
+
+
+<h1>Multi-function Download Live Data Button <img src="C:\AdminImport\HelpFiles\LiveInputButton.png" alt="Live Input Button"></h1>
+
+<h2>Description:</h2>
+<p>The download Live Data button allows users to download live data by calling the <code>DownloadLiveInput</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Download live data.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const SessionInputButton = () => {
+  const [progress, setProgress] = useState(0);
+
+  const handleDownload = async () => {
+    const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+    const apiUrl = 'https://localhost:5001/AdminApi/DownloadLiveInput'; // Updated endpoint
+
+    const response = await axios.post(apiUrl, { clientId }, {
+      responseType: 'blob',
+      onDownloadProgress: (progressEvent) => {
+        const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+        setProgress(progress);
+      },
+    });
+
+    const blob = new Blob([response.data]);
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', 'input_file_name');
+    document.body.appendChild(link);
+    link.click();
+    setProgress(0);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleDownload}&gt;Download Live Input&lt;/button&gt; {/* Updated button text */}
+      {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+    &lt;/div&gt;
+  );
+};
+
+export default SessionInputButton; // Updated export name    
+</code>
+</pre>
+
+
+
+<h1>Multi-function Download Backup Button (Download) <img src="C:\AdminImport\HelpFiles\SessionDownloadBackupButton.png" alt="Download Backup Button"></h1>
+
+<h2>Description:</h2>
+<p>The session download backup button allows users to download session backup by calling the <code>DownloadBackup</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Download session input from the table.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const SessionInputButton = () => {
+  const [progress, setProgress] = useState(0);
+
+  const handleDownload = async () => {
+    const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+    const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023';
+    const apiUrl = 'https://localhost:5001/AdminApi/DownloadBackup';
+
+    const response = await axios.post(apiUrl, { clientId, sessionId }, {
+      responseType: 'blob',
+      onDownloadProgress: (progressEvent) => {
+        const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+        setProgress(progress);
+      },
+    });
+
+    const blob = new Blob([response.data]);
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', 'input_file_name');
+    document.body.appendChild(link);
+    link.click();
+    setProgress(0);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleDownload}&gt;Download Input&lt;/button&gt;
+      {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+    &lt;/div&gt;
+  );
+};
+
+export default SessionDownloadBackupButton;
+</code>
+</pre>
+
+
+
+
+
+<h1>Multi-function Restore Backup Button (Restore)<img src="C:\AdminImport\HelpFiles\SessionDownloadBackupButton.png" alt="Live Input Button"></h1>
+
+<h2>Description:</h2>
+<p>The Restore Backup Data button allows users to fully restore the back data from a session by calling the <code>GetRestoreData</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Restore full backup data from a session.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+    
+    const SessionRestoreButton = () => {
+      const [progress, setProgress] = useState(0);
+    
+      const handleRestore = async (locationGroups = null, providerGroups = null) => {
+        const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+        const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023';
+        const restoreType = 'Full'; // or 'Partial' based on your requirement
+        const apiUrl = `https://localhost:5001/AdminApi/RestoreBackupFromFromSession`;
+    
+        try {
+          const response = await axios.post(apiUrl, {
+            clientId,
+            sessionId,
+            restoreType,
+            locationsGroups: locationGroups,
+            providersGroups: providerGroups
+          });
+    
+          // Handle the response as needed
+          console.log('Restore successful:', response.data);
+    
+          // Reset progress after completion
+          setProgress(0);
+        } catch (error) {
+          console.error('Error occurred during restore:', error);
+          // Reset progress in case of error
+          setProgress(0);
+        }
+      };
+
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleRestore}&gt;Restore Backup&lt;/button&gt; 
+          {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+        &lt;/div&gt;
+      );
+    };
+    
+    export default SessionRestoreButton;
+</code>
+</pre>
+
+
+<h1 class="red-heading">Restore Screen</h1>
+
+<h1>Multi-function Restore Backup Button (View) <img src="C:\AdminImport\HelpFiles\SessionDownloadBackupButton.png" alt="Live Input Button"></h1>
+
+<h2>Description:</h2>
+<p>The Restore Backup Data button allows users get the backup data from a session by calling the <code>GetRestoreData</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Display on screen the backup data then allow the user to select what to restore.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+    
+    const SessionRestoreButton = () => {
+      const [progress, setProgress] = useState(0);
+    
+      const handleRestore = async () => {
+        const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+        const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023';
+        const apiUrl = `https://localhost:5001/AdminApi/GetRestoreData?clientId=${clientId}&sessionId=${sessionId}`;
+    
+        try {
+          const response = await axios.get(apiUrl, {
+            onDownloadProgress: (progressEvent) => {
+              const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+              setProgress(progress);
+            },
+          });
+    
+          // Handle the response data as needed
+          console.log(response.data);
+          response.data.RestoreLocationEntries.forEach((entry, index) => {
+            console.log(`Entry ${index + 1}:`);
+            console.log(`Group ID: ${entry.GroupId}`);
+            console.log(`Entities IDs:`);
+            entry.EntitiesIds.forEach((entityId, entityIndex) => {
+              console.log(`- ${entityId}`);
+            });
+          });
+          
+          response.data.RestoreProviderEntries.forEach((entry, index) => {
+            console.log(`Entry ${index + 1}:`);
+            console.log(`Group ID: ${entry.GroupId}`);
+            console.log(`Entities IDs:`);
+            entry.EntitiesIds.forEach((entityId, entityIndex) => {
+              console.log(`- ${entityId}`);
+            });
+          });
+                  
+          // Reset progress after completion
+          setProgress(0);
+        } catch (error) {
+          console.error('Error occurred during restore:', error);
+          // Reset progress in case of error
+          setProgress(0);
+        }
+      };
+
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleRestore}&gt;Restore Backup&lt;/button&gt; 
+          {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+        &lt;/div&gt;
+      );
+    };
+    
+    export default SessionRestoreButton;
+</code>
+</pre>
+
+
+
+
+<h1>Get json value button for locations or providers group id  <img src="C:\AdminImport\HelpFiles\ViewJsonValueButton.png" alt="View Json Value Button"></h1>
+
+<h2>Description:</h2>
+<p>The view json value button allows users to get the json value for a group id data from a session backup by calling the <code>GetRestoreGroupEntryJsonValue</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Get json value for a group id from a session backup.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+    
+    const GetRestoreGroupEntryJsonValueButton = () => {
+      const [jsonValue, setJsonValue] = useState(null);
+    
+      const handleGetJsonValue = async () => {
+        const groupId = 'f87d4d77-7b3b-4e6a-8f43-0951f067fd11';
+        const jsonRestoreType = 'Locations'; // The value will be Locations or Providers.
+        const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11'; // Provide the client ID if needed
+        const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023'; // Provide the session ID if needed
+        const apiUrl = `https://localhost:5001/AdminApi/GetRestoreGroupEntryJsonValue?groupId=${groupId}&jsonRestoreType=${jsonRestoreType}&clientId=${clientId}&sessionId=${sessionId}`;
+    
+        try {
+          const response = await axios.get(apiUrl);
+          // Set the JSON value received from the API response
+          setJsonValue(response.data);
+        } catch (error) {
+          console.error('Error occurred while fetching JSON value:', error);
+          // Reset JSON value state in case of error
+          setJsonValue(null);
+        }
+      };
+    
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleGetJsonValue}&gt;Get JSON Value&lt;/button&gt; 
+          &lt;div&gt; 
+          {/* Display the JSON value received from the API */}
+          &lt;pre&gt; {jsonValue ? JSON.stringify(jsonValue, null, 2) : 'No JSON value retrieved yet'}  &lt;/pre&gt;
+          &lt;/div&gt;          
+        &lt;/div&gt;
+      );
+    };
+    
+    export default GetRestoreGroupEntryJsonValueButton;
+</code>
+</pre>
+
+
+
+<h1>Restore Backup Button (From Restore Screen)<img src="C:\AdminImport\HelpFiles\SessionRestoreBackupButton.png" alt="Restore button from restore screen"></h1>
+
+<h2>Description:</h2>
+<p>The Restore Backup Data button allows users to select which groups of locations and providers to restore from a session by calling the <code>RestoreBackupFromFromSession</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Restore selected groups of locations and providers to restore from a session.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+    
+    const SessionRestoreButton = () => {
+      const [progress, setProgress] = useState(0);
+    
+      const handleRestore = async () => {
+        const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+        const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023';
+        const restoreType = 'Partial'; // or 'Partial' based on your requirement
+        const locationsGroups = ['6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023', 'a2bc613f-d729-46ab-8b81-ae06deeeef5f']; // Example location group IDs
+        const providersGroups = ['f3c849ca-20b4-4a63-8c49-01a9bdfbdc05', 'd47fc8ad-e9fb-46c4-b2cf-8a22b05324a9']; // Example provider group IDs
+        const apiUrl = `https://localhost:5001/AdminApi/RestoreBackupFromFromSession`;
+    
+        try {
+          const response = await axios.post(apiUrl, {
+            clientId,
+            sessionId,
+            restoreType,
+            locationsGroups,
+            providersGroups
+          });
+    
+          // Handle the response as needed
+          console.log('Restore successful:', response.data);
+    
+          // Reset progress after completion
+          setProgress(0);
+        } catch (error) {
+          console.error('Error occurred during restore:', error);
+          // Reset progress in case of error
+          setProgress(0);
+        }
+      };
+    
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleRestore}&gt;Restore Backup&lt;/button&gt; 
+          {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+        &lt;/div&gt;
+      );
+    };
+    
+    export default SessionRestoreButton;
+</code>
+</pre>
+
+
+<h1 class="red-heading">Session Input Screen</h1>
+
+<img src="C:\AdminImport\HelpFiles\SessionInputScreenLocations.png" alt="Session Input Screen - Locations">
+<img src="C:\AdminImport\HelpFiles\SessionInputScreenProviders.png" alt="Session Input Screen - Providers">
+
+<h1>Multi-function Session Input Button (View) <img src="C:\AdminImport\HelpFiles\SessionInputButton.png" alt="Session Input Button"></h1>
+
+<h2>Description:</h2>
+<p>The session input view button allows users get the input data from a session by calling the <code>GetSessionInput</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Display on screen the session input data then allow the user to select what to import.</li>  
+  <li>Display get input data progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+  import React, { useState } from 'react';
+  import axios from 'axios';
+  
+  const SessionInputView = () => {
+    const [progress, setProgress] = useState(0);
+  
+    const handleGetInput = async () => {
+      const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+      const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023';
+      const apiUrl = `https://localhost:5001/AdminApi/GetSessionInput?clientId=${clientId}&sessionId=${sessionId}`;
+  
+      try {
+        const response = await axios.get(apiUrl);
+  
+        // Handle the response data as needed
+        console.log('Session Input Data:', response.data);
+  
+        // Loop through locations and providers
+        response.data.locations.forEach((location, index) => {
+          console.log(`Location ${index + 1}:`);
+          console.log(`Location Name: ${location.LocationName}`);
+          console.log(`Address: ${location.Address1}`);
+          console.log(`Client ID: ${location.ClientId}`);
+          console.log(`Market Entity ID: ${location.MarketEntityId}`);
+          console.log(`Tracking ID: ${location.TrackingId}`);
+        });
+  
+        response.data.providers.forEach((provider, index) => {
+          console.log(`Provider ${index + 1}:`);
+          console.log(`First Name: ${provider.FirstName}`);
+          console.log(`Last Name: ${provider.LastName}`);
+          console.log(`NPI: ${provider.Npi}`);
+          console.log(`Client ID: ${provider.ClientId}`);
+          console.log(`Market Entity ID: ${provider.MarketEntityId}`);
+          console.log(`Tracking ID: ${provider.TrackingId}`);
+        });
+  
+        // Reset progress after completion
+        setProgress(0);
+      } catch (error) {
+        console.error('Error occurred while fetching session input data:', error);
+        // Reset progress in case of error
+        setProgress(0);
+      }
+    };
+  
+    return (
+      &lt;div&gt;
+        &lt;button onClick={handleGetInput}&gt;Get Session Input&lt;/button&gt; 
+        {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+      &lt;/div&gt;
+    );
+  };
+
+  export default SessionInputView;
+</code>
+</pre>
+
+
+
+<h1>Open Help File Button <img src="C:\AdminImport\HelpFiles\SessionHelpButton.png" alt="Open Help Button"></h1>
+
+<h2>Description:</h2>
+<p>The help button allows users to open help file for current client by calling the <code>OpenHelpUrl</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Open help file from the table.</li>  
+  <li>Start an instance of web browser with the help file in it.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+  <code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+
+    const HelpButton = ({ clientId, sessionId }) => {
+      const [helpContent, setHelpContent] = useState('');
+      const [isLoading, setIsLoading] = useState(false);
+
+      const handleOpenHelpUrl = async () => {
+        setIsLoading(true);
+        try {
+          const apiUrl = 'https://localhost:5001/AdminApi/OpenHelpUrl';
+          const response = await axios.post(apiUrl, { clientId, sessionId });
+
+          setHelpContent(response.data);
+        } catch (error) {
+          console.error('Error fetching help content:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleDownload}&gt;Open Help&lt;/button&gt;
+          {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+        &lt;/div&gt;
+      );
+    };
+
+    export default HelpButton;
+  </code>
+</pre>
+
+<h1>Get json value button for locations or providers  <img src="C:\AdminImport\HelpFiles\DataInputGetJsonButton.png" alt="View Json Value Button"></h1>
+
+<h2>Description:</h2>
+<p>The view json value button allows users to get the json value for provider or location data from a session input by calling the <code>GetInputEntryJsonValue</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Get json value for a location or provider from a session input data.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+    
+    const GetInputEntryJsonValue = () => {
+      const [jsonValue, setJsonValue] = useState(null);
+    
+      const handleGetJsonValue = async () => {
+        const trackingId = 'f87d4d77-7b3b-4e6a-8f43-0951f067fd11';
+        const jsonRestoreType = 'Locations'; // The value will be Locations or Providers.
+        const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11'; // Provide the client ID if needed
+        const sessionId = '6a9ea5e8-9e2f-4d48-9dc8-45ac9dfd9023'; // Provide the session ID if needed
+        const apiUrl = `https://localhost:5001/AdminApi/GetSessionInputEntryJsonValue?groupId=${groupId}&jsonRestoreType=${jsonRestoreType}&clientId=${clientId}&sessionId=${sessionId}`;
+    
+        try {
+          const response = await axios.get(apiUrl);
+          // Set the JSON value received from the API response
+          setJsonValue(response.data);
+        } catch (error) {
+          console.error('Error occurred while fetching JSON value:', error);
+          // Reset JSON value state in case of error
+          setJsonValue(null);
+        }
+      };
+    
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleGetJsonValue}&gt;Get JSON Value&lt;/button&gt; 
+          &lt;div&gt; 
+          {/* Display the JSON value received from the API */}
+          &lt;pre&gt; {jsonValue ? JSON.stringify(jsonValue, null, 2) : 'No JSON value retrieved yet'}  &lt;/pre&gt;
+          &lt;/div&gt;          
+        &lt;/div&gt;
+      );
+    };
+    
+    export default GetInputEntryJsonValue;
+</code>
+</pre>
+
+
+
+
+<h1>Import button for locations and providers  <img src="C:\AdminImport\HelpFiles\ImportButton.png" alt="Import Button"></h1>
+
+<h2>Description:</h2>
+<p>The import button allows users call <code>ImportFromInputData</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Display import progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+  import React, { useState } from 'react';
+
+  const ImportDataButton = () => {
+    const [isLoading, setIsLoading] = useState(false);
+  
+    const handleImportData = async () => {
+      setIsLoading(true);
+  
+      try {
+        // Generate GUIDs for locations and providers
+        const locations = ['1d106db4-8c21-4a05-9a62-d2319e1f9e6c','c1cfda62-ea6b-4d08-a8d9-5b5c07f581ef','92530053-1f14-4ab4-9059-01e021d33d56','87fb18d4-8fc8-4a28-a2a6-77e21fd22921'];
+        const providers = ['6fc7f6b9-13f3-4a7d-b45b-8b90a7d8602e','7afdfc16-43ef-4b45-8df5-77725f4918a5','e85d1935-d065-465e-b5a3-2e6847352b25','203a17b5-1007-4a91-af38-5a33064c0977'];
+  
+        const requestBody = {
+          locations: locations,
+          providers: providers
+        };
+  
+        const targetEnvironment = 'Staging';
+  
+        const response = await fetch(`https://localhost:5001/AdminApi/ImportFromInputData?targetEnvironment=${targetEnvironment}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to import data');
+        }
+  
+        // Assuming the response is JSON
+        const data = await response.json();
+        console.log('Import successful', data);
+      } catch (error) {
+        console.error('Error importing data:', error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    return (
+      &lt;div&gt;
+      &lt;button onClick={handleImportData} disabled={isLoading}&gt;
+        {isLoading ? 'Importing...' : 'Import Data'}
+      &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  };
+  
+  export default ImportDataButton;
+</code>
+</pre>
+
+
+<h1 class="red-heading">Live Data Input Screen</h1>
+
+<img src="C:\AdminImport\HelpFiles\LiveFeedInputScreenLocations.png" alt="Session Input Screen - Locations">
+<img src="C:\AdminImport\HelpFiles\LiveFeedInputScreenProviders.png" alt="Session Input Screen - Providers">
+
+
+<h1>Multi-function Live Data Input Button (View) <img src="C:\AdminImport\HelpFiles\LiveDataInputButton.png" alt="Live Input Button"></h1>
+
+<h2>Description:</h2>
+<p>The live data input view button allows users get the live input data from a live feed by calling the <code>GetSessionInput</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Display on screen the live feed input data then allow the user to select what to import.</li>  
+  <li>Display get input data progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+  import React, { useState } from 'react';
+  import axios from 'axios';
+  
+  const LiveDataInputView = () => {
+    const [progress, setProgress] = useState(0);
+  
+    const handleGetInput = async () => {
+      const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11';
+      const apiUrl = `https://localhost:5001/AdminApi/GetDataFromLiveFeed?clientId=${clientId}`;
+  
+      try {
+        const response = await axios.get(apiUrl);
+  
+        // Handle the response data as needed
+        console.log('Session Input Data:', response.data);
+  
+        // Loop through locations and providers
+        response.data.locations.forEach((location, index) => {
+          console.log(`Location ${index + 1}:`);
+          console.log(`Location Name: ${location.LocationName}`);
+          console.log(`Address: ${location.Address1}`);
+          console.log(`Client ID: ${location.ClientId}`);
+          console.log(`Market Entity ID: ${location.MarketEntityId}`);
+          console.log(`Tracking ID: ${location.TrackingId}`);
+        });
+  
+        response.data.providers.forEach((provider, index) => {
+          console.log(`Provider ${index + 1}:`);
+          console.log(`First Name: ${provider.FirstName}`);
+          console.log(`Last Name: ${provider.LastName}`);
+          console.log(`NPI: ${provider.Npi}`);
+          console.log(`Client ID: ${provider.ClientId}`);
+          console.log(`Market Entity ID: ${provider.MarketEntityId}`);
+          console.log(`Tracking ID: ${provider.TrackingId}`);
+        });
+  
+        // Reset progress after completion
+        setProgress(0);
+      } catch (error) {
+        console.error('Error occurred while fetching session input data:', error);
+        // Reset progress in case of error
+        setProgress(0);
+      }
+    };
+  
+    return (
+      &lt;div&gt;
+        &lt;button onClick={handleGetLiveDataInput}&gt;Get Live Feed Input&lt;/button&gt; 
+        {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+      &lt;/div&gt;
+    );
+  };
+
+  export default LiveDataInputView;
+</code>
+</pre>
+
+
+<h1>Open Help File Button <img src="C:\AdminImport\HelpFiles\SessionHelpButton.png" alt="Open Help Button"></h1>
+
+<h2>Description:</h2>
+<p>The help button allows users to open help file for current client by calling the <code>OpenHelpUrl</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Open help file from the table.</li>  
+  <li>Start an instance of web browser with the help file in it.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+  <code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+
+    const HelpButton = ({ clientId, sessionId }) => {
+      const [helpContent, setHelpContent] = useState('');
+      const [isLoading, setIsLoading] = useState(false);
+
+      const handleOpenHelpUrl = async () => {
+        setIsLoading(true);
+        try {
+          const apiUrl = 'https://localhost:5001/AdminApi/OpenHelpUrl';
+          const response = await axios.post(apiUrl, { clientId, sessionId });
+
+          setHelpContent(response.data);
+        } catch (error) {
+          console.error('Error fetching help content:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleDownload}&gt;Open Help&lt;/button&gt;
+          {progress &gt; 0 && &lt;progress value={progress} max={100} /&gt;}
+        &lt;/div&gt;
+      );
+    };
+
+    export default HelpButton;
+  </code>
+</pre>
+
+
+<h1>Get json value button for locations or providers  <img src="C:\AdminImport\HelpFiles\DataInputGetJsonButton.png" alt="View Json Value Button"></h1>
+
+<h2>Description:</h2>
+<p>The view json value button allows users to get the json value for provider or location data from a session live feed by calling the <code>GetInputEntryJsonValue</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Get json value for a location or provider from a live feed data.</li>  
+  <li>Display download progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+    import React, { useState } from 'react';
+    import axios from 'axios';
+    
+    const GetInputEntryJsonValue = () => {
+      const [jsonValue, setJsonValue] = useState(null);
+    
+      const handleGetJsonValue = async () => {
+        const trackingId = 'f87d4d77-7b3b-4e6a-8f43-0951f067fd11';
+        const jsonRestoreType = 'Locations'; // The value will be Locations or Providers.
+        const clientId = 'f89d2d36-7b3b-4e6a-8f43-0951f067fd11'; // Provide the client ID if needed
+        const apiUrl = `https://localhost:5001/AdminApi/GetSessionInputEntryJsonValue?groupId=${groupId}&jsonRestoreType=${jsonRestoreType}&clientId=${clientId}`;
+    
+        try {
+          const response = await axios.get(apiUrl);
+          // Set the JSON value received from the API response
+          setJsonValue(response.data);
+        } catch (error) {
+          console.error('Error occurred while fetching JSON value:', error);
+          // Reset JSON value state in case of error
+          setJsonValue(null);
+        }
+      };
+    
+      return (
+        &lt;div&gt;
+          &lt;button onClick={handleGetJsonValue}&gt;Get JSON Value&lt;/button&gt; 
+          &lt;div&gt; 
+          {/* Display the JSON value received from the API */}
+          &lt;pre&gt; {jsonValue ? JSON.stringify(jsonValue, null, 2) : 'No JSON value retrieved yet'}  &lt;/pre&gt;
+          &lt;/div&gt;          
+        &lt;/div&gt;
+      );
+    };
+    
+    export default GetInputEntryJsonValue;
+</code>
+</pre>
+
+
+
+
+
+
+<h1>Import button for locations and providers  <img src="C:\AdminImport\HelpFiles\ImportButton.png" alt="Import Button"></h1>
+
+<h2>Description:</h2>
+<p>The import button allows users call <code>ImportFromInputData</code> API endpoint.</p>
+
+<h2>Features:</h2>
+<ul>
+  <li>Display import progress using a progress bar.</li>  
+</ul>
+
+<h2>Sample React Code:</h2>
+<pre style="background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+<code>
+  import React, { useState } from 'react';
+
+  const ImportDataButton = () => {
+    const [isLoading, setIsLoading] = useState(false);
+  
+    const handleImportData = async () => {
+      setIsLoading(true);
+  
+      try {
+        // Generate GUIDs for locations and providers
+        const locations = ['1d106db4-8c21-4a05-9a62-d2319e1f9e6c','c1cfda62-ea6b-4d08-a8d9-5b5c07f581ef','92530053-1f14-4ab4-9059-01e021d33d56','87fb18d4-8fc8-4a28-a2a6-77e21fd22921'];
+        const providers = ['6fc7f6b9-13f3-4a7d-b45b-8b90a7d8602e','7afdfc16-43ef-4b45-8df5-77725f4918a5','e85d1935-d065-465e-b5a3-2e6847352b25','203a17b5-1007-4a91-af38-5a33064c0977'];
+  
+        const requestBody = {
+          locations: locations,
+          providers: providers
+        };
+  
+        const targetEnvironment = 'Staging';
+  
+        const response = await fetch(`https://localhost:5001/AdminApi/ImportFromInputData?targetEnvironment=${targetEnvironment}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to import data');
+        }
+  
+        // Assuming the response is JSON
+        const data = await response.json();
+        console.log('Import successful', data);
+      } catch (error) {
+        console.error('Error importing data:', error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    return (
+      &lt;div&gt;
+      &lt;button onClick={handleImportData} disabled={isLoading}&gt;
+        {isLoading ? 'Importing...' : 'Import Data'}
+      &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  };
+  
+  export default ImportDataButton;
+</code>
+</pre>
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+

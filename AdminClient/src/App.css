@@ -1,0 +1,233 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+html,
+body,
+#root {
+  /* height: 100%; */
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --black1: rgb(25 25 25);
+  --black2: rgb(40 40 40);
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(250 250 250/0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(250 250 250/0.5);
+}
+.myScrollBlurY::before {
+  content: "";
+  @apply h-10 w-full absolute bottom-0 z-[101];
+  background-image: linear-gradient(to bottom, transparent, var(--black1) 80%);
+}
+
+.menuBar {
+  @apply sticky top-0 left-0 flex flex-col justify-between text-white min-w-[250px] gap-4 h-screen;
+  background: var(--black1);
+}
+.menuBar .dashBtn {
+  @apply text-center rounded-md p-1.5 shadow-md mx-4;
+  background: var(--black2);
+}
+.clientsCover {
+  @apply relative;
+  height: calc(50vh - 100px);
+}
+.clients {
+  @apply overflow-y-auto h-full;
+}
+.menuBar header {
+  @apply font-semibold px-4;
+  color: rgb(250 250 250/0.6);
+}
+.menuBar ul svg {
+  @apply h-5;
+  fill: white;
+}
+.menuBar ul li {
+  @apply flex items-center px-4 gap-2 py-3 hover:bg-neutral-800 cursor-pointer;
+}
+.menuBar ul li > * {
+  @apply relative z-[101];
+}
+.toolsCover {
+  height: calc(50vh - 100px);
+}
+.tools {
+  @apply overflow-y-auto h-full relative;
+}
+.menuBar ul .active span {
+  @apply relative;
+}
+.menuBar ul .active span::before {
+  @apply h-1.5 w-1.5 rounded-full bg-white absolute -right-6 top-1/2 -translate-y-1/2;
+  content: "";
+}
+
+/* Client Data */
+
+.clientData {
+  border: 1px solid rgb(0 0 0/0.2);
+}
+.page table,
+.resultPage table {
+  white-space: nowrap;
+}
+.page thead th {
+  @apply font-semibold text-stone-500 text-sm;
+}
+.page thead tr th,
+.page tbody tr td,
+.resultPage thead tr th,
+.resultPage tbody tr td {
+  @apply py-4 pr-6;
+}
+
+.page thead tr th:first-child,
+.page tbody tr td:first-child,
+.resultPage thead tr th:first-child,
+.resultPage tbody tr td:first-child {
+  @apply pl-6;
+}
+
+.page thead tr th {
+  @apply pt-0;
+}
+
+.page thead tr th {
+  border-bottom: 1px solid rgb(0 0 0/0.2);
+}
+.dashboard table button {
+  @apply text-white text-sm p-1.5 px-3 rounded-md;
+  background: var(--black1);
+}
+
+.page tbody tr:nth-child(2n) {
+  background: rgb(245 245 245);
+}
+
+.page tbody tr:hover {
+  background: rgb(0 0 0/0.1);
+}
+
+.clientData .tableCover {
+  overflow-x: auto;
+}
+.dashboard table tr th,
+.dashboard table tr td {
+  @apply text-start;
+}
+
+/* Result Page CSS  */
+
+.resultPage ul li {
+  @apply border p-2 px-4 cursor-pointer;
+}
+
+.resultPage table {
+  @apply w-full;
+}
+
+.resultPage section {
+  @apply grid m-6 p-0 py-5 rounded-md gap-3;
+  border: 1px solid rgb(0 0 0/0.2);
+}
+
+.resultPage section .tableCover {
+  @apply overflow-x-auto;
+}
+
+.resultPage section header {
+  @apply sticky left-0 px-5;
+}
+
+.resultTabsCover button {
+  @apply text-white p-1 w-16 rounded text-base;
+  background: var(--black1);
+}
+
+.resultTabs .active {
+  border: 1px solid rgb(0 0 0/0.5);
+}
+
+.resultPage .tableActive svg {
+  @apply rotate-0;
+}
+
+.resultPage .inst .groupIdCover:nth-child(2n) .groupId {
+  background: rgb(245 245 245);
+}
+.resultPage .inst .groupIdCover .groupId:hover {
+  @apply cursor-pointer;
+  background: rgb(0 0 0/0.1);
+}
+
+.plock table:hover {
+  background: white;
+}
+
+.plock .insideTable thead tr {
+  background: rgb(0 0 0/0.1) !important;
+}
+.plock .insideTable thead tr {
+  background: rgb(250 250 250);
+}
+.plock .tbody2 tr {
+  background: white !important;
+}
+.plock .tbody2:hover td {
+  background: white;
+}
+.plock .mainTable thead tr th:first-child {
+  @apply text-center pl-0 !important;
+}
+.resultPage table td {
+  @apply text-center;
+}
+
+.resultPage .specResult table tr th:first-child,
+.resultPage .specResult table tr td:first-child {
+  @apply flex;
+}
+
+@media screen and (max-width: 980px) {
+  .resultTabsCover {
+    @apply flex-col justify-start items-start gap-5 !important;
+  }
+}
+
+.jsonBtn{
+  @apply relative;
+}
+
+.jsonPopUp{
+  @apply hidden absolute bottom-0 right-0 translate-y-full rounded z-10 pt-4 whitespace-nowrap; 
+  background: rgb(30 30 30);
+}
+
+.jsonPopUp .object-key , .jsonPopUp .object-key + span{
+  color: white !important;
+}
+
+.jsonPopUp .variable-value span , .jsonPopUp .node-ellipsis{
+  color: lime !important;
+}
+
+.jsonPopUp .variable-row{
+  border: none !important;
+}
+
+.jsonBtn:hover .jsonPopUp{
+  @apply z-10;
+  display: unset;
+}
