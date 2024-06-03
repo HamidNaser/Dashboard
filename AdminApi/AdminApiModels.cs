@@ -1,12 +1,12 @@
-using System.Text.Json;
-
 namespace AdminApi
 {
+    /*
     public class ExceptionClass
     {
         public string Details { get; set; }
         public string InnerDetails { get; set; }
     }
+
     public class LocationEntry
     {
         public string LocationName { get; set; }
@@ -15,16 +15,16 @@ namespace AdminApi
         public string ClientId { get; set; }
         public string MarketEntityId { get; set; }
         public string TrackingId { get; set; }
-        public string Error => JsonSerializer.Serialize<ExceptionClass>(new ExceptionClass
+        public object Error => new ExceptionClass
         {
             Details = "Network Exception",
             InnerDetails = "Network Exception Inner Details"
-        });
-        public string JsonValue => JsonSerializer.Serialize<ExceptionClass>(new ExceptionClass
+        };
+        public object JsonValue => new ExceptionClass
         {
             Details = "Network Exception",
             InnerDetails = "Network Exception Inner Details"
-        });
+        };
 
     }
 
@@ -38,12 +38,12 @@ namespace AdminApi
         public string MarketEntityId { get; set; }
         public string LocationName { get; set; }
         public string TrackingId { get; set; }
-        public string Error => JsonSerializer.Serialize<ExceptionClass>(new ExceptionClass
+        public string Error => JsonSerializer.Serialize(new ExceptionClass
         {
             Details = "Network Exception",
             InnerDetails = "Network Exception Inner Details"
         });
-        public string JsonValue => JsonSerializer.Serialize<ExceptionClass>(new ExceptionClass
+        public string JsonValue => JsonSerializer.Serialize(new ExceptionClass
         {
             Details = "Network Exception",
             InnerDetails = "Network Exception Inner Details"
@@ -54,6 +54,7 @@ namespace AdminApi
     {
         public List<LocationEntry> ProviderLocationEntries { get; set; }
     }
+    
     public class ProviderLocationEntry
     {
         public string Npi { get; set; }
@@ -160,13 +161,6 @@ namespace AdminApi
         public string Column7 { get; set; }
     }
 
-    public class ProcessList
-    {
-        public List<string> provs { get; set; }
-        public List<string> locs { get; set; }
-        public List<string> provLocs { get; set; }
-        public List<string> spec { get; set; }
-    }
     public class ImporterSessionResults
     {
         public string ProvidersSPECHeader { get; set; }
@@ -206,6 +200,7 @@ namespace AdminApi
     {
         public string Column1 { get; set; }
     }
+    
     public class ImporterSessionResultsTrackingIds
     {
         public List<string> locationsVLD { get; set; }
@@ -240,24 +235,24 @@ namespace AdminApi
         public List<MenuNode> MenuNodes { get; set; }
     }
 
-    public class ClientsSessionsDetails
+    public class ClientsSessionsDetailsAdmin
     {
-        public List<ClientBlobs> ClientBlobsList { get; set; }
+        public List<ClientBlobsAdmin> ClientBlobsList { get; set; }
     }
-    public class ClientBlobs
+    public class ClientBlobsAdmin
     {
         public string ClientId { get; set; }
         public string ClientName { get; set; }
         public string ClientSessionId { get; set; }
         public bool HasProviders { get; set; }
         public bool HasLocations { get; set; }
-        public List<BlobDetails> ClientBlobsList { get; set; }
+        public List<BlobDetailsAdmin> ClientBlobsList { get; set; }
     }
-    public class BlobDetails
+    public class BlobDetailsAdmin
     {
         public string BlobName { get; set; }
         public string BlobType { get; set; }
-        public string BlobModifiedDate { get; set; }
+        public string? BlobModifiedDate { get; set; }
         public string BlobContentSize { get; set; }
         public string BlobContentType { get; set; }
 
@@ -280,4 +275,5 @@ namespace AdminApi
         public string BlobLocationsCountPass { get; set; }
 
     }
+*/
 }

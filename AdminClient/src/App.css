@@ -101,7 +101,7 @@ body,
 }
 
 .page thead tr th {
-  @apply pt-0;
+  @apply text-left;
 }
 
 .page thead tr th {
@@ -143,7 +143,8 @@ body,
   border: 1px solid rgb(0 0 0/0.2);
 }
 
-.resultPage section .tableCover {
+.resultPage section .tableCover,
+.resultPage section .groupIdCover {
   @apply overflow-x-auto;
 }
 
@@ -206,28 +207,20 @@ body,
   }
 }
 
-.jsonBtn{
-  @apply relative;
+.jsonPopUp {
+  @apply hidden text-start absolute bg-white z-40 p-2 border border-black rounded -translate-x-[80%] -translate-y-[60%] max-h-[115px] overflow-auto;
 }
-
-.jsonPopUp{
-  @apply hidden absolute bottom-0 right-0 translate-y-full rounded z-10 pt-4 whitespace-nowrap; 
-  background: rgb(30 30 30);
+.jsonBtn {
+  z-index: 20;
 }
-
-.jsonPopUp .object-key , .jsonPopUp .object-key + span{
-  color: white !important;
-}
-
-.jsonPopUp .variable-value span , .jsonPopUp .node-ellipsis{
-  color: lime !important;
-}
-
-.jsonPopUp .variable-row{
-  border: none !important;
-}
-
-.jsonBtn:hover .jsonPopUp{
-  @apply z-10;
+.jsonBtn:hover ~ .jsonPopUp {
   display: unset;
+}
+
+.jsonPopUp:hover{
+  display: unset;
+}
+
+.filterRadios label{
+  padding-right: 3px;
 }

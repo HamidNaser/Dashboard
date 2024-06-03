@@ -14,6 +14,7 @@ const postSlice = createSlice({
     providersLocationsINST: [],
     providersLocationsBINST: [],
     providersSPEC: [],
+    option: null,
   },
   reducers: {
     updatePostData(state, action) {
@@ -71,9 +72,9 @@ const postSlice = createSlice({
 
       // state[key] = data[key];
 
-      if(data[key][0].trackingId){
+      if (data[key][0].trackingId) {
         state[key] = data[key].map((element) => element.trackingId);
-      }else{
+      } else {
         state[key] = data[key].map((element) => element.groupId);
       }
     },
@@ -83,6 +84,10 @@ const postSlice = createSlice({
       // delete state[key];
 
       state[key] = [];
+    },
+
+    addOption(state, action) {
+      return Object.assign(state, action.payload);
     },
 
     emptyPostState(state) {
@@ -102,5 +107,6 @@ export const {
   updateAllPostData,
   deleteAllPostData,
   emptyPostState,
+  addOption,
 } = postSlice.actions;
 export default postSlice.reducer;

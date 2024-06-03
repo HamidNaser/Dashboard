@@ -5,26 +5,13 @@ import LocationResult from "../components/LocationResult";
 import PlocResult from "../components/PlocResult";
 import ProviderResult from "../components/ProviderResult";
 import SpecResult from "../components/SpecResult";
-import { emptyPostState } from "../store/slices/PostSlice";
-import { useFetcher } from "react-router-dom";
+import { addOption, emptyPostState } from "../store/slices/PostSlice";
 
 const Result = () => {
-  const myData = {
-    locationsVLD: ["string1", "string2"],
-    locationsCTR: [],
-    locationsINST: [],
-    providersVLD: [],
-    providersCTR: [],
-    providersINST: [],
-    providersLocationsVLD: [],
-    providersLocationsCTR: [],
-    providersLocationsINST: [],
-    providersLocationsBINST: [],
-    providersSPEC: [],
-  };
-
   const dispatch = useDispatch();
   const [resultPage, setResultPage] = useState(1);
+
+  const [filterData, setFilterData] = useState("3");
 
   const clientResult = useSelector((state) => {
     return state.result;
@@ -58,7 +45,8 @@ const Result = () => {
     dispatch(emptyPostState());
   };
 
-  const storedData = useSelector((state) => {
+  // data from store
+  const dataFromStore = useSelector((state) => {
     return state.postData;
   });
 
@@ -71,14 +59,15 @@ const Result = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: storedData,
+        body: JSON.stringify(dataFromStore),
       }
     );
-
-
     const data = await res.json();
-    // console.log(JSON.stringify(myData));
-    // console.log(JSON.stringify(storedData));
+
+    // data that i am sending
+    console.log(dataFromStore);
+
+    // response i am getting from server
     console.log(data);
   };
 
@@ -92,52 +81,94 @@ const Result = () => {
             className={resultPage == 1 ? "active" : undefined}
             onClick={() => setResultPage(1)}
           >
-            XXX-000-111
+            Locations
           </li>
           <li
             className={resultPage == 2 ? "active" : undefined}
             onClick={() => setResultPage(2)}
           >
-            YYY-000-111
+            Providers
           </li>
           <li
             className={resultPage == 3 ? "active" : undefined}
             onClick={() => setResultPage(3)}
           >
-            ZZZ-000-111
+            Providers.Locations
           </li>
           <li
             className={resultPage == 4 ? "active" : undefined}
             onClick={() => setResultPage(4)}
           >
-            VVV-000-111
+            Providers Specialties
           </li>
         </ul>
 
-        <div className="flex gap-5 items-center">
+        <div className="filterRadios flex items-center gap-9">
+          <div className="flex items-center" >
+            <label htmlFor="A">Connect</label>
+            <input
+              id="A"
+              value={1}
+              onChange={(e) => {
+                setFilterData(e.target.value);
+                dispatch(addOption({ option: e.target.value }));
+              }}
+              type="radio"
+              name="filters"
+            />
+          </div>
+          <div className="flex items-center">
+            <label htmlFor="B">Importer</label>
+            <input
+              id="B"
+              value={2}
+              onChange={(e) => {
+                setFilterData(e.target.value);
+                dispatch(addOption({ option: e.target.value }));
+              }}
+              type="radio"
+              name="filters"
+            />
+          </div>
+          <div className="flex items-center">
+            <label htmlFor="C">All</label>
+            <input
+              id="C"
+              value={3}
+              onChange={(e) => {setFilterData(e.target.value) ; dispatch(addOption({ option: e.target.value }));}}
+              type="radio"
+              name="filters"
+              defaultChecked
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-3 items-center">
           <button onClick={clearAllChecks}>Clear</button>
 
-          <button onClick={sendResult}>Run</button>
+          <button onClick={sendResult}>Import</button>
         </div>
       </div>
 
-      {/* {resultData && resultPage == 1 && (
-        <LocationResult resultData={resultData} />
-      )}
-
-      {resultData && resultPage == 2 && (
-        <ProviderResult resultData={resultData} />
-      )}
-
-      {resultData && resultPage == 3 && <PlocResult resultData={resultData} />}
-
-      {resultData && resultPage == 4 && <SpecResult resultData={resultData} />} */}
-
       {resultData && (
         <>
-          {<LocationResult resultData={resultData} hidden={resultPage !== 1} />}
-          <ProviderResult resultData={resultData} hidden={resultPage !== 2} />
-          <PlocResult resultData={resultData} hidden={resultPage !== 3} />
+          {
+            <LocationResult
+              filterData={filterData}
+              resultData={resultData}
+              hidden={resultPage !== 1}
+            />
+          }
+          <ProviderResult
+            filterData={filterData}
+            resultData={resultData}
+            hidden={resultPage !== 2}
+          />
+          <PlocResult
+            filterData={filterData}
+            resultData={resultData}
+            hidden={resultPage !== 3}
+          />
           <SpecResult resultData={resultData} hidden={resultPage !== 4} />
         </>
       )}
