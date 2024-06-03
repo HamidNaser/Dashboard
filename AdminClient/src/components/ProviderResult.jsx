@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  deleteAllPostData,
-  removePostData,
-  updateAllPostData,
-  updatePostData,
-} from "../store/slices/PostSlice";
+import { deleteAllPostData, removePostData, updateAllPostData, updatePostData } from "../store/slices/PostSlice";
 import UserSvg from "../assets/UserSvg";
 import ReactJson from "react-json-view";
 
@@ -56,9 +51,7 @@ const ProviderResult = ({ filterData, resultData, hidden }) => {
       {filterData != 1 && (
         <>
           <section className="p-4 px-6">
-            <header className="text-xl font-bold">
-              {resultData.providersVLDHeader}
-            </header>
+            <header className="text-xl font-bold">{resultData.providersVLDHeader}</header>
             <div className="tableCover">
               <table>
                 <thead>
@@ -69,16 +62,11 @@ const ProviderResult = ({ filterData, resultData, hidden }) => {
                     <th>Last Name</th>
                     <th>Entity ID</th>
                     <th>Location Name</th>
-                    <th>Error</th>
-                    <th>JSON</th>
+                    {/* <th>Error</th> */}
                     <th>Tracking ID</th>
+                    <th>JSON</th>
                     <th>
-                      <input
-                        onChange={(e) =>
-                          checkAllBoxes([e.target.checked, keys[0]])
-                        }
-                        type="checkbox"
-                      />
+                      <input onChange={(e) => checkAllBoxes([e.target.checked, keys[0]])} type="checkbox" />
                     </th>
                   </tr>
                 </thead>
@@ -95,33 +83,23 @@ const ProviderResult = ({ filterData, resultData, hidden }) => {
                         <td>{e.lastName}</td>
                         <td>{e.marketEntityId}</td>
                         <td>{e.locationName}</td>
-                        <td className="relative">
+                        {/* <td className="relative">
                           <button className="jsonBtn errorBtn bg-red-600 text-white rounded p-1 px-1.5 text-sm">
                             Error
                           </button>
                           <div className="jsonPopUp">
                             <ReactJson src={e.error} />
                           </div>
-                        </td>
+                        </td> */}
+                        <td>{e.trackingId}</td>
                         <td className="relative">
-                          <button className="jsonBtn bg-green-600 text-white rounded p-1 px-1.5 text-sm">
-                            JSON
-                          </button>
+                          <button className="jsonBtn bg-green-600 text-white rounded p-1 px-1.5 text-sm">JSON</button>
                           <div className="jsonPopUp">
                             <ReactJson src={e.jsonValue} />
                           </div>
                         </td>
-                        <td>{e.trackingId}</td>
                         <td>
-                          <input
-                            onChange={(event) =>
-                              event.target.checked
-                                ? storeData(i, keys[0])
-                                : removeData(i, keys[0])
-                            }
-                            type="checkbox"
-                            className={keys[0]}
-                          />
+                          <input onChange={(event) => (event.target.checked ? storeData(i, keys[0]) : removeData(i, keys[0]))} type="checkbox" className={keys[0]} />
                         </td>
                       </tr>
                     );
@@ -132,9 +110,7 @@ const ProviderResult = ({ filterData, resultData, hidden }) => {
           </section>
 
           <section className="p-4 px-6">
-            <header className="text-xl font-bold">
-              {resultData.providersCTRHeader}
-            </header>
+            <header className="text-xl font-bold">{resultData.providersCTRHeader}</header>
             <div className="tableCover">
               <table>
                 <thead>
@@ -149,12 +125,7 @@ const ProviderResult = ({ filterData, resultData, hidden }) => {
                     <th>JSON</th>
                     <th>Tracking ID</th>
                     <th>
-                      <input
-                        onChange={(e) =>
-                          checkAllBoxes([e.target.checked, keys[1]])
-                        }
-                        type="checkbox"
-                      />
+                      <input onChange={(e) => checkAllBoxes([e.target.checked, keys[1]])} type="checkbox" />
                     </th>
                   </tr>
                 </thead>
@@ -172,32 +143,20 @@ const ProviderResult = ({ filterData, resultData, hidden }) => {
                         <td>{e.marketEntityId}</td>
                         <td>{e.locationName}</td>
                         <td className="relative">
-                          <button className="jsonBtn errorBtn bg-red-600 text-white rounded p-1 px-1.5 text-sm">
-                            Error
-                          </button>
+                          <button className="jsonBtn errorBtn bg-red-600 text-white rounded p-1 px-1.5 text-sm">Error</button>
                           <div className="jsonPopUp">
                             <ReactJson src={e.error} />
                           </div>
                         </td>
                         <td className="relative">
-                          <button className="jsonBtn bg-green-600 text-white rounded p-1 px-1.5 text-sm">
-                            JSON
-                          </button>
+                          <button className="jsonBtn bg-green-600 text-white rounded p-1 px-1.5 text-sm">JSON</button>
                           <div className="jsonPopUp">
                             <ReactJson src={e.jsonValue} />
                           </div>
                         </td>
                         <td>{e.trackingId}</td>
                         <td>
-                          <input
-                            onChange={(event) =>
-                              event.target.checked
-                                ? storeData(i, keys[1])
-                                : removeData(i, keys[1])
-                            }
-                            type="checkbox"
-                            className={keys[1]}
-                          />
+                          <input onChange={(event) => (event.target.checked ? storeData(i, keys[1]) : removeData(i, keys[1]))} type="checkbox" className={keys[1]} />
                         </td>
                       </tr>
                     );
@@ -211,52 +170,28 @@ const ProviderResult = ({ filterData, resultData, hidden }) => {
 
       {filterData != 2 && (
         <section className="inst p-4 px-6">
-          <header className="text-xl font-bold">
-            {resultData.providersINSTHeader}
-          </header>
+          <header className="text-xl font-bold">{resultData.providersINSTHeader}</header>
 
           <div className="flex items-center justify-between px-6 font-semibold text-neutral-600">
             <span>Group Id</span>
             <div>
-              <input
-                onChange={(e) => checkAllBoxes([e.target.checked, keys[2]])}
-                type="checkbox"
-              />
+              <input onChange={(e) => checkAllBoxes([e.target.checked, keys[2]])} type="checkbox" />
             </div>
           </div>
 
           {resultData.providersINST.map((e, i) => {
             return (
               <div className="groupIdCover" key={i}>
-                <div
-                  className={`groupId px-6 flex items-center justify-between ${
-                    showTableIndex === i && "tableActive"
-                  }`}
-                >
-                  <div
-                    onClick={() => toggleTable(i)}
-                    className="flex items-center py-4 gap-2 grow"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 fill-neutral-800 rotate-180"
-                      viewBox="0 0 512 512"
-                    >
+                <div className={`groupId px-6 flex items-center justify-between ${showTableIndex === i && "tableActive"}`}>
+                  <div onClick={() => toggleTable(i)} className="flex items-center py-4 gap-2 grow">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 fill-neutral-800 rotate-180" viewBox="0 0 512 512">
                       <path d="M98 190.06l139.78 163.12a24 24 0 0036.44 0L414 190.06c13.34-15.57 2.28-39.62-18.22-39.62h-279.6c-20.5 0-31.56 24.05-18.18 39.62z" />
                     </svg>
 
                     {e.groupId}
                   </div>
 
-                  <input
-                    onChange={(event) =>
-                      event.target.checked
-                        ? storeData(i, keys[2])
-                        : removeData(i, keys[2])
-                    }
-                    type="checkbox"
-                    className={keys[2]}
-                  />
+                  <input onChange={(event) => (event.target.checked ? storeData(i, keys[2]) : removeData(i, keys[2]))} type="checkbox" className={keys[2]} />
                 </div>
 
                 {showTableIndex === i && (
@@ -289,17 +224,13 @@ const ProviderResult = ({ filterData, resultData, hidden }) => {
                               <td>{elem.marketEntityId}</td>
                               <td>{elem.locationName}</td>
                               <td className="relative">
-                                <button className="jsonBtn errorBtn bg-red-600 text-white rounded p-1 px-1.5 text-sm">
-                                  Error
-                                </button>
+                                <button className="jsonBtn errorBtn bg-red-600 text-white rounded p-1 px-1.5 text-sm">Error</button>
                                 <div className="jsonPopUp">
                                   <ReactJson src={e.error} />
                                 </div>
                               </td>
                               <td className="relative">
-                                <button className="jsonBtn bg-green-600 text-white rounded p-1 px-1.5 text-sm">
-                                  JSON
-                                </button>
+                                <button className="jsonBtn bg-green-600 text-white rounded p-1 px-1.5 text-sm">JSON</button>
                                 <div className="jsonPopUp">
                                   <ReactJson src={e.jsonValue} />
                                 </div>

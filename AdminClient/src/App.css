@@ -10,6 +10,15 @@ body,
 :root {
   --black1: rgb(25 25 25);
   --black2: rgb(40 40 40);
+  --pass: #e54a4b;
+  --fail: #4c92e5;
+  --resultBg: #ea9719;
+  --helpBg: #e68dd8;
+  --inputBg: #000000;
+  --backUpBg: #257ade;
+  --altRowBg: #c9c9da;
+  --liveDataBg: #df1010;
+  --tickGreenBg: #5aaf08;
 }
 
 ::-webkit-scrollbar {
@@ -32,7 +41,7 @@ body,
 }
 
 .menuBar {
-  @apply sticky top-0 left-0 flex flex-col justify-between text-white min-w-[250px] gap-4 h-screen;
+  @apply sticky top-0 left-0 flex flex-col text-white min-w-[250px] gap-4 h-screen;
   background: var(--black1);
 }
 .menuBar .dashBtn {
@@ -41,7 +50,7 @@ body,
 }
 .clientsCover {
   @apply relative;
-  height: calc(50vh - 100px);
+  height: calc(100vh - 150px);
 }
 .clients {
   @apply overflow-y-auto h-full;
@@ -70,7 +79,7 @@ body,
   @apply relative;
 }
 .menuBar ul .active span::before {
-  @apply h-1.5 w-1.5 rounded-full bg-white absolute -right-6 top-1/2 -translate-y-1/2;
+  @apply h-1.5 w-1.5 rounded-full bg-green-400 absolute -right-6 top-1/2 -translate-y-1/2;
   content: "";
 }
 
@@ -101,19 +110,14 @@ body,
 }
 
 .page thead tr th {
-  @apply text-left;
-}
-
-.page thead tr th {
   border-bottom: 1px solid rgb(0 0 0/0.2);
 }
-.dashboard table button {
+.dashboard button {
   @apply text-white text-sm p-1.5 px-3 rounded-md;
-  background: var(--black1);
 }
 
 .page tbody tr:nth-child(2n) {
-  background: rgb(245 245 245);
+  background: var(--altRowBg);
 }
 
 .page tbody tr:hover {
@@ -123,7 +127,6 @@ body,
 .clientData .tableCover {
   overflow-x: auto;
 }
-.dashboard table tr th,
 .dashboard table tr td {
   @apply text-start;
 }
@@ -131,7 +134,7 @@ body,
 /* Result Page CSS  */
 
 .resultPage ul li {
-  @apply border p-2 px-4 cursor-pointer;
+  @apply border p-2 px-4 cursor-pointer rounded-md;
 }
 
 .resultPage table {
@@ -153,12 +156,12 @@ body,
 }
 
 .resultTabsCover button {
-  @apply text-white p-1 w-16 rounded text-base;
-  background: var(--black1);
+  @apply p-1 w-16 rounded text-base;
 }
 
 .resultTabs .active {
   border: 1px solid rgb(0 0 0/0.5);
+  background: var(--altRowBg)
 }
 
 .resultPage .tableActive svg {
@@ -224,3 +227,10 @@ body,
 .filterRadios label{
   padding-right: 3px;
 }
+
+.dashboard .live-data-btn button{
+  font-size: 18px;
+}
+.dashboard .live-data-btn button svg{
+  height: 28px;
+} 

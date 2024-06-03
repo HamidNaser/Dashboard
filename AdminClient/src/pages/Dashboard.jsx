@@ -6,14 +6,14 @@ import ReactJson from "react-json-view";
 
 const Dashboard = () => {
   const temp = {
-    name: "Ankush",
+    name: "Admin",
     hobby: "Computer",
   };
 
   const [dashData, setDashData] = useState([]);
 
   const getDashboardData = async () => {
-    const res = await fetch("https://localhost:5001/AdminApi/GetSessions");
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/AdminApi/GetSessions`);
     const data = await res.json();
 
     setDashData(data.clientBlobsList);

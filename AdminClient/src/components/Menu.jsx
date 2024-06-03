@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import MenuHeader from "./Menu/MenuHeader";
 import ClientMenu from "./Menu/MenuClients";
 import ToolsMenu from "./Menu/MenuTools";
 
 const Menu = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [clientMenuData, setClientMenuData] = useState([]);
   const [toolsMenuData, setToolsMenuData] = useState([]);
 
   const getMenuData = async () => {
     try {
-      const res = await fetch("https://localhost:5001/AdminApi/GetMenu");
+      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/AdminApi/GetMenu`);
       const data = await res.json();
 
       setClientMenuData(data.menuNodes[1].menuItems);
@@ -35,7 +31,6 @@ const Menu = () => {
     <section className="menuBar py-4">
       <MenuHeader />
       <ClientMenu clientMenuData={clientMenuData} savedClientIndex={savedClientIndex} />
-      <ToolsMenu toolsMenuData={toolsMenuData} saveToolsIndex={saveToolsIndex} />
     </section>
   );
 };

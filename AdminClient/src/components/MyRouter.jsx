@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Dashboard from "../pages/Dashboard";
-import Result from "../pages/Result";
+import View from "../pages/View";
 import Menu from "./Menu";
 import { menuOff, menuOn} from "../store/slices/MenuSlice";
+import ViewInput from "../pages/ViewInput";
 
 const MyRouter = () => {
   const isMenuRedux = useSelector((state) => state.menu.toggleMenu);
@@ -29,7 +30,8 @@ const MyRouter = () => {
       {isMenuRedux && <Menu />}
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/result" element={<Result />} />
+        <Route path="/view/results" element={<View />} />
+        <Route path="/view/input" element={<ViewInput />} />
       </Routes>
     </BrowserRouter>
   );

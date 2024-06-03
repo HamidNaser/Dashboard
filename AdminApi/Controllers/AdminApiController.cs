@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using Microsoft.AspNetCore.Http;
+using System.Reflection;
 
 namespace AdminApi.Controllers;
 
@@ -436,90 +438,71 @@ public class AdminApiController : ControllerBase
     [Route("GetSessions")]
     public ClientsSessionsDetailsAdmin GetSessions(string? clientId = null)
     {
-        string json = System.IO.File.ReadAllText($"C:\\AdminImport\\Data\\Sessions.json");
+        var json = ResourceReader.ReadEmbeddedResource("Sessions.json");
+
         var clientsSessionsDetailsAdmin = JsonConvert.DeserializeObject<ClientsSessionsDetailsAdmin>(json);
 
         return clientsSessionsDetailsAdmin;
-        //var connectionString = _configuration.GetValue<string>("BLOB_STORAGE_CONNECTION_STRING");   
-
-        //return new SessionsDetailsManager().GetSessions(connectionString, clientId);
     }
 
     [HttpPost]
     [Route("DownloadSessionResults")]
     public IActionResult DownloadSessionResults()
     {
-        var fileFullName = $"C:\\AdminImport\\Data\\DownloadResults.json";
-        if (string.IsNullOrEmpty(fileFullName) || !System.IO.File.Exists(fileFullName))
-        {
-            return NotFound();
-        }
+        var resourceName = "AdminApi.Data.DownloadResults.json";
 
-        var fileInfo = new FileInfo(fileFullName);
-        var stream = new FileStream(fileFullName, FileMode.Open, FileAccess.Read);
-        return File(stream, "application/octet-stream", fileInfo.Name);
+        return GetFileDownload(resourceName);
     }
 
     [HttpPost]
     [Route("DownloadInput")]
     public IActionResult DownloadInput(string? clientId = null, string? sessionId = null)
     {
-        var fileFullName = $"C:\\AdminImport\\Data\\DownloadInput.json";
-        if (string.IsNullOrEmpty(fileFullName) || !System.IO.File.Exists(fileFullName))
-        {
-            return NotFound();
-        }
+        var resourceName = "AdminApi.Data.DownloadInput.json";
 
-        var fileInfo = new FileInfo(fileFullName);
-        var stream = new FileStream(fileFullName, FileMode.Open, FileAccess.Read);
-        return File(stream, "application/octet-stream", fileInfo.Name);
+        return GetFileDownload(resourceName);
     }
 
     [HttpPost]
     [Route("DownloadLiveInput")]
     public IActionResult DownloadLiveInput(string clientId)
     {
-        var fileFullName = $"C:\\AdminImport\\Data\\DownloadInputLive.json";
-        if (string.IsNullOrEmpty(fileFullName) || !System.IO.File.Exists(fileFullName))
-        {
-            return NotFound();
-        }
+        var resourceName = "AdminApi.Data.DownloadInputLive.json";
 
-        var fileInfo = new FileInfo(fileFullName);
-        var stream = new FileStream(fileFullName, FileMode.Open, FileAccess.Read);
-        return File(stream, "application/octet-stream", fileInfo.Name);
+        return GetFileDownload(resourceName);
     }
-    
+
     [HttpPost]
     [Route("DownloadBackup")]
     public IActionResult DownloadBackup(string? clientId = null, string? sessionId = null)
     {
-        var fileFullName = $"C:\\AdminImport\\Data\\DownloadBackup.json";
-        if (string.IsNullOrEmpty(fileFullName) || !System.IO.File.Exists(fileFullName))
+        var resourceName = "AdminApi.Data.DownloadBackup.json";
+
+        return GetFileDownload(resourceName);
+    }
+
+    private IActionResult GetFileDownload(string resourceName)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var resourceStream = assembly.GetManifestResourceStream(resourceName);
+
+        if (resourceStream == null)
         {
             return NotFound();
         }
 
-        var fileInfo = new FileInfo(fileFullName);
-        var stream = new FileStream(fileFullName, FileMode.Open, FileAccess.Read);
-        return File(stream, "application/octet-stream", fileInfo.Name);
+        return File(resourceStream, "application/octet-stream", "DownloadBackup.json");
     }
 
     [HttpPost]
     [Route("RestoreBackup")]
     public IActionResult RestoreBackup(string clientId, string sessionId)
     {
-        var fileFullName = $"C:\\AdminImport\\Data\\DownloadBackup.json";
-        if (string.IsNullOrEmpty(fileFullName) || !System.IO.File.Exists(fileFullName))
-        {
-            return NotFound();
-        }
+        var resourceName = "AdminApi.Data.DownloadBackup.json";
 
-        var fileInfo = new FileInfo(fileFullName);
-        var stream = new FileStream(fileFullName, FileMode.Open, FileAccess.Read);
-        return File(stream, "application/octet-stream", fileInfo.Name);
+        return GetFileDownload(resourceName);
     }
-    
+
     [HttpPost]
     [Route("OpenHelpUrl")]
     public IActionResult OpenHelpUrl(string? clientId = null, string? sessionId = null)
@@ -536,29 +519,14 @@ public class AdminApiController : ControllerBase
 
         return Ok();
     }    
-    private string GetFileFullPath(DownloadType downloadType)
-    {
-        return $"C:\\AdminImport\\Data\\Download{downloadType}.json";
-    }
     
     [HttpGet]
     [Route("GetSessionResults")]
     public ImporterSessionResults GetSessionResults(string? clientId = null, string? sessionId = null)
     {
-        string json = System.IO.File.ReadAllText($"C:\\AdminImport\\Data\\SessionResults.json");
+        string json = ResourceReader.ReadEmbeddedResource("SessionResults.json");
+
         var importerSessionResults = JsonConvert.DeserializeObject<ImporterSessionResults>(json);
-        //var importerSessionResults  = importerClient.GetImporterSessionDetails(runInfo);
-/*
-        var runInfo = new RunInfo()
-        {
-            ClientId = "0b814461-02ff-4c76-95cd-3c5c166e3c55",//clientId,
-            ImportSessionId = "c6f8d8a4-8a89-40a6-bd16-aac57e9e4daa",
-            RunUsingTraceBlobFromAzure = true,
-            AppConfigurations = _configuration
-        };
-        
-        var importerSessionResults = _lomaLindaClient.GetImporterSessionDetails(runInfo);
-  */      
         importerSessionResults.ProvidersVLDHeader = "Failed Validation"; 
         importerSessionResults.ProvidersCTRHeader = "Failed Creating Connect Providers";    
         importerSessionResults.ProvidersINSTHeader = "Failed Batch Update";
@@ -575,37 +543,17 @@ public class AdminApiController : ControllerBase
         SetLocationsTableColumnsNames(importerSessionResults);
         SetLocationsFromProviderTableColumnsNames(importerSessionResults);
         SetProvidersSPECTableColumnsNames(importerSessionResults);
-
-        //SetProviders(importerSessionResults);
-        //SetLocations(importerSessionResults);
-        //SetProviderLocations(importerSessionResults);
         
         SetProviderSpecialties(importerSessionResults);
 
         return importerSessionResults;
-        
-        /*
-        var importerBlobStorage = new ImporterSessionResults();
-
-        SetProvidersTableColumnsNames(importerBlobStorage);
-        SetLocationsTableColumnsNames(importerBlobStorage);
-        SetLocationsFromProviderTableColumnsNames(importerBlobStorage);
-        SetProvidersSPECTableColumnsNames(importerBlobStorage);
-
-        SetProviders(importerBlobStorage);
-        SetLocations(importerBlobStorage);
-        SetProviderLocations(importerBlobStorage);
-        SetProviderSpecialties(importerBlobStorage);
-
-        return importerBlobStorage;
-        */
     }
 
     [HttpGet]
     [Route("GetSessionInputEntryJsonValue")]
     public string GetInputEntryJsonValue(string trackingId, JsonRestoreType jsonRestoreType, string? clientId = null, string? sessionId = null)
     {
-        string json = System.IO.File.ReadAllText($"C:\\AdminImport\\Data\\SessionInput.json");
+        string json = ResourceReader.ReadEmbeddedResource("SessionInput.json");
         var importerSessionInput = JsonConvert.DeserializeObject<ImporterSessionInput>(json);
         
         Task.Delay(10000);
@@ -618,88 +566,20 @@ public class AdminApiController : ControllerBase
     [Route("GetSessionInput")]
     public ImporterSessionInputLite GetSessionInput(string? clientId = null, string? sessionId = null)
     {
-
-        
-        string json = System.IO.File.ReadAllText($"C:\\AdminImport\\Data\\SessionInput.json");
+        string json = ResourceReader.ReadEmbeddedResource("SessionInput.json");
         var importerSessionInput = JsonConvert.DeserializeObject<ImporterSessionInput>(json);
         
         return importerSessionInput?.GetSessionInputData() ?? new ImporterSessionInputLite();        
-        //var importerSessionResults  = importerClient.GetImporterSessionDetails(runInfo);
-/*
-        var runInfo = new RunInfo()
-        {
-            ClientId = "0b814461-02ff-4c76-95cd-3c5c166e3c55",//clientId,
-            ImportSessionId = "c6f8d8a4-8a89-40a6-bd16-aac57e9e4daa",
-            RunUsingTraceBlobFromAzure = true,
-            AppConfigurations = _configuration
-        };
-        
-        var importerSessionResults = _lomaLindaClient.GetImporterSessionDetails(runInfo);
-  */   
-
-        //SetProvidersTableColumnsNames(importerSessionResults);
-        //SetLocationsTableColumnsNames(importerSessionResults);
-
-        //return importerSessionInput;
-        
-        /*
-        var importerBlobStorage = new ImporterSessionResults();
-
-        SetProvidersTableColumnsNames(importerBlobStorage);
-        SetLocationsTableColumnsNames(importerBlobStorage);
-        SetLocationsFromProviderTableColumnsNames(importerBlobStorage);
-        SetProvidersSPECTableColumnsNames(importerBlobStorage);
-
-        SetProviders(importerBlobStorage);
-        SetLocations(importerBlobStorage);
-        SetProviderLocations(importerBlobStorage);
-        SetProviderSpecialties(importerBlobStorage);
-
-        return importerBlobStorage;
-        */
     }
 
     [HttpGet]
     [Route("GetDataFromLiveFeed")]
     public ImporterSessionInputLite GetDataFromLiveFeed(string? clientId = null)
     {
-        string json = System.IO.File.ReadAllText($"C:\\AdminImport\\Data\\SessionInput.json");
+        string json = ResourceReader.ReadEmbeddedResource("SessionInput.json");
         var importerSessionInput = JsonConvert.DeserializeObject<ImporterSessionInput>(json);
 
         return importerSessionInput?.GetSessionInputData() ?? new ImporterSessionInputLite();
-        //var importerSessionResults  = importerClient.GetImporterSessionDetails(runInfo);
-/*
-        var runInfo = new RunInfo()
-        {
-            ClientId = "0b814461-02ff-4c76-95cd-3c5c166e3c55",//clientId,
-            ImportSessionId = "c6f8d8a4-8a89-40a6-bd16-aac57e9e4daa",
-            RunUsingTraceBlobFromAzure = true,
-            AppConfigurations = _configuration
-        };
-        
-        var importerSessionResults = _lomaLindaClient.GetImporterSessionDetails(runInfo);
-  */   
-
-        //SetProvidersTableColumnsNames(importerSessionResults);
-        //SetLocationsTableColumnsNames(importerSessionResults);
-
-        //return importerSessionInput;
-        
-        /*
-        var importerBlobStorage = new ImporterSessionResults();
-
-        SetProvidersTableColumnsNames(importerBlobStorage);
-        SetLocationsTableColumnsNames(importerBlobStorage);
-        SetLocationsFromProviderTableColumnsNames(importerBlobStorage);
-        SetProvidersSPECTableColumnsNames(importerBlobStorage);
-
-        SetProviders(importerBlobStorage);
-        SetLocations(importerBlobStorage);
-        SetProviderLocations(importerBlobStorage);
-        SetProviderSpecialties(importerBlobStorage);
-
-        return importerBlobStorage;
-        */
     }
 
     [HttpGet]
@@ -1137,12 +1017,6 @@ public class AdminApiController : ControllerBase
     {
         var builder = new StringBuilder(size);
 
-        // Unicode/ASCII Letters are divided into two blocks
-        // (Letters 65�90 / 97�122):
-        // The first group containing the uppercase letters and
-        // the second group containing the lowercase.
-
-        // char is a single Unicode character
         char offset = lowerCase ? 'a' : 'A';
         const int lettersOffset = 26; // A...Z or a..z: length=26
 

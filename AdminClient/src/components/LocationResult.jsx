@@ -69,9 +69,9 @@ const LocationResult = ({ filterData, resultData, hidden }) => {
                   <th>Address</th>
                   <th>Client ID</th>
                   <th>Entity ID</th>
-                  <th>Error</th>
-                  <th>JSON</th>
+                  {/* <th>Error</th> */}
                   <th>Tracking ID</th>
+                  <th>JSON</th>
                   <th>
                     <input
                       onChange={(e) =>
@@ -94,14 +94,15 @@ const LocationResult = ({ filterData, resultData, hidden }) => {
                       <td>{e.address1}</td>
                       <td>{e.clientId}</td>
                       <td>{e.marketEntityId}</td>
-                      <td className="relative">
+                      {/* <td className="relative">
                         <button className="jsonBtn errorBtn bg-red-600 text-white rounded p-1 px-1.5 text-sm">
                           Error
                         </button>
                         <div className="jsonPopUp">
                           <ReactJson src={e.error} />
                         </div>
-                      </td>
+                      </td> */}
+                      <td>{e.trackingId}</td>
                       <td className="relative">
                         <button className="jsonBtn bg-green-600 text-white rounded p-1 px-1.5 text-sm">
                           JSON
@@ -110,7 +111,6 @@ const LocationResult = ({ filterData, resultData, hidden }) => {
                           <ReactJson src={e.jsonValue} />
                         </div>
                       </td>
-                      <td>{e.trackingId}</td>
                       <td>
                         <input
                           onChange={(event) =>
@@ -220,7 +220,7 @@ const LocationResult = ({ filterData, resultData, hidden }) => {
               />
             </div>
           </div>
-          {resultData.locationsINST.map((e, i) => {
+          {resultData?.locationsINST?.map((e, i) => {
             return (
               <div key={i} className="tableCover">
                 <div className="groupIdCover" key={i}>
