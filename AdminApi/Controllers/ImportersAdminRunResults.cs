@@ -230,20 +230,6 @@ namespace Importer.Core.Common
         public object JsonValue { get; set; }
 
         public string JsonValueStr => JsonValue.ToString();
-/*
-         public object Error => new ExceptionClass
-        {
-            Details = "Network Exception",
-            InnerDetails = "Network Exception Inner Details"
-        };
-        public object JsonValue => new ExceptionClass
-        {
-            Details = "Network Exception",
-            InnerDetails = "Network Exception Inner Details"
-        };
-
- */
-
     }
 
     public static class ErrorAdminUtilCaption
@@ -355,13 +341,6 @@ namespace Importer.Core.Common
 
         public object JsonValue { get; set; }
         public string JsonValueStr => JsonValue.ToString();        
-/*
-        public object JsonValue => new ExceptionClass
-        {
-            Details = "Network Exception",
-            InnerDetails = "Network Exception Inner Details"
-        };
-        */
     }
 
     public class ProviderEntryWithLocations : ProviderEntry
@@ -418,19 +397,6 @@ namespace Importer.Core.Common
 
         public object JsonValue { get; set; }
 
-        /*
-        public string Error => JsonSerializer.Serialize<ExceptionClass>(new ExceptionClass
-        {
-            Details = "Network Exception",
-            InnerDetails = "Network Exception Inner Details"
-        });
-
-        public string JsonValue => JsonSerializer.Serialize<ExceptionClass>(new ExceptionClass
-        {
-            Details = "Network Exception",
-            InnerDetails = "Network Exception Inner Details"
-        });
-        */
         public List<ProviderEntry> Providers { get; set; }
         public string JsonValueToBatchUpdateApi { get; set; }
     }
@@ -443,19 +409,6 @@ namespace Importer.Core.Common
 
         public string JsonValueStr => JsonValue.ToString();
 
-        /*
-        public string Error => JsonSerializer.Serialize<ExceptionClass>(new ExceptionClass
-        {
-            Details = "Network Exception",
-            InnerDetails = "Network Exception Inner Details"
-        });
-        public string JsonValue => JsonSerializer.Serialize<ExceptionClass>(new ExceptionClass
-        {
-            Details = "Network Exception",
-            InnerDetails = "Network Exception Inner Details"
-        });
-
-         */
         public List<LocationEntry> Locations { get; set; }
         public string JsonValueToBatchUpdateApi { get; set; }
     }

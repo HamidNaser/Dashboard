@@ -1,0 +1,86 @@
+{
+  "MenuHeader": "Matrix",
+  "MenuNodes": [
+    {
+      "MenuNodeCaption": "DASHBOARD",
+      "MenuItems": null
+    },
+    {
+      "MenuNodeCaption": "CLIENTS",
+      "MenuItems": [
+        {
+          "MenuItemCaption": "Manchester United",
+          "MenuItemId": "f89d2d36-7b3b-4e6a-8f43-0951f067fd11"
+        },
+        {
+          "MenuItemCaption": "Liverpool",
+          "MenuItemId": "ec5288e2-7f52-4a80-89e2-1f6282f51e95"
+        },
+        {
+          "MenuItemCaption": "Chelsea",
+          "MenuItemId": "48db09aa-af4c-4e18-a502-5a474b00e5b2"
+        },
+        {
+          "MenuItemCaption": "Manchester City",
+          "MenuItemId": "6bb7e7ef-2d4a-41fb-a922-f7a79d48d20a"
+        },
+        {
+          "MenuItemCaption": "Tottenham Hotspur",
+          "MenuItemId": "1b6a70aa-1583-4c90-81a1-ae5bbf82dbbc"
+        },
+        {
+          "MenuItemCaption": "Arsenal",
+          "MenuItemId": "e70dd6a5-dde1-42fb-8c4e-68ac27e97756"
+        },
+        {
+          "MenuItemCaption": "Real Madrid",
+          "MenuItemId": "a0e8f7a1-fa8a-49e4-93ec-b1ec443f76a1"
+        },
+        {
+          "MenuItemCaption": "Barcelona",
+          "MenuItemId": "b5e9430c-2b86-43b1-8516-7ae1c5e79515"
+        },
+        {
+          "MenuItemCaption": "Atletico Madrid",
+          "MenuItemId": "a4a3fc63-9e96-49c3-968f-13273a5b6203"
+        },
+        {
+          "MenuItemCaption": "Sevilla",
+          "MenuItemId": "74e1c744-4f53-48e5-ba87-5879ce8716a4"
+        },
+        {
+          "MenuItemCaption": "Real Sociedad",
+          "MenuItemId": "43d87550-0a25-442c-b32b-2d0a8d6b67a3"
+        },
+        {
+          "MenuItemCaption": "Valencia",
+          "MenuItemId": "7d8a7a82-d675-4952-8163-78806f2d65a6"
+        },
+        {
+          "MenuItemCaption": "Bayern Munich",
+          "MenuItemId": "63ee2b36-64d2-45e1-b686-1e9d3f25e17e"
+        },
+        {
+          "MenuItemCaption": "Borussia Dortmund",
+          "MenuItemId": "d10f8323-0b4a-4d54-9234-8b0356b5d1e0"
+        },
+        {
+          "MenuItemCaption": "RB Leipzig",
+          "MenuItemId": "ac4e70de-5f85-4a50-b78f-7896c0c6de5c"
+        },
+        {
+          "MenuItemCaption": "Bayer Leverkusen",
+          "MenuItemId": "a8910b89-40c6-4bb5-a4b5-b8d6f13b876c"
+        },
+        {
+          "MenuItemCaption": "VfL Wolfsburg",
+          "MenuItemId": "f87f7db0-0e7d-4c9f-9e05-6837c1c070d7"
+        },
+        {
+          "MenuItemCaption": "Eintracht Frankfurt",
+          "MenuItemId": "d4ba4e04-cdbf-4b6d-94d7-4b90e12dd135"
+        }
+      ]
+    }
+  ]
+}

@@ -55,3 +55,5 @@ C:\GitHub\Dashboard\AdminApi\obj\Debug\net6.0\refint\AdminApi.dll
 C:\GitHub\Dashboard\AdminApi\obj\Debug\net6.0\AdminApi.pdb
 C:\GitHub\Dashboard\AdminApi\obj\Debug\net6.0\AdminApi.genruntimeconfig.cache
 C:\GitHub\Dashboard\AdminApi\obj\Debug\net6.0\ref\AdminApi.dll
+C:\GitHub\Dashboard\AdminApi\bin\Debug\net6.0\Data\Menu.json
+C:\GitHub\Dashboard\AdminApi\bin\Debug\net6.0\Data\SessionResults1.json
