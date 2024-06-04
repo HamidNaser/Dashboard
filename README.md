@@ -736,3 +736,236 @@ To fully understand how the `ClientData` component works, the custom hook `useCl
 2. **Add Action Handlers**: Implement functionality for the delete icon and any other actions if needed.
 3. **Styling**: Ensure that the styles and classes are properly defined in your CSS files.
 
+
+### Breakdown of `useClientData.js`
+
+The `useClientData` hook provides functionalities for managing and interacting with client data, specifically focusing on downloading various session-related data and handling progress updates.
+
+#### Imports and Initial Setup
+- **Imports**:
+  - `axios` for making HTTP requests.
+  - React hooks (`useState`).
+
+#### State Management
+- **State**:
+  - `downloadLoading` to track the loading state during downloads.
+  - `progress` to track the download progress.
+
+#### Download Blob File Function
+- **Purpose**: This function takes a `Blob` object and a file name, creates a download link, and programmatically clicks it to start the download.
+- **Error Handling**: Logs an error if the provided data is not a `Blob` object.
+
+```javascript
+const downloadBlobFile = async (blob, fileName) => {
+  try {
+    if (blob instanceof Blob) {
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", `${fileName}.json`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      console.error("The provided data is not a Blob object.");
+    }
+  } catch (err) {
+    console.log("Error:", err);
+  }
+};
+```
+
+#### Download Help Function
+- **Purpose**: Downloads help data for a specific client and session.
+- **API Endpoint**: `/AdminApi/OpenHelpUrl`.
+- **Error Handling**: Logs errors to the console.
+
+```javascript
+const downloadHelp = async (clientId, sessionId) => {
+  setDownloadLoading(true);
+  try {
+    const api = import.meta.env.VITE_BASE_URL + "/AdminApi/OpenHelpUrl";
+    const res = await axios.post(api, { clientId: clientId, sessionId: sessionId });
+    await downloadBlobFile(res.data, "help.json");
+  } catch (err) {
+    console.log("error :", err);
+  } finally {
+    setDownloadLoading(false);
+  }
+};
+```
+
+#### Download Session Results Function
+- **Purpose**: Downloads session results for a specific client and session.
+- **API Endpoint**: `/AdminApi/DownloadSessionResults`.
+- **Progress Handling**: Updates `progress` state based on download progress.
+- **Error Handling**: Logs errors to the console and resets progress state after completion.
+
+```javascript
+const downloadSessionResults = async (clientId, sessionId) => {
+  setDownloadLoading(true);
+  try {
+    const api = import.meta.env.VITE_BASE_URL + "/AdminApi/DownloadSessionResults";
+    const res = await axios.post(
+      api,
+      { clientId, sessionId },
+      {
+        responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+          setProgress(progress);
+        },
+      }
+    );
+    await downloadBlobFile(res.data, "session_results");
+  } catch (err) {
+    console.log("error :", err);
+  } finally {
+    setDownloadLoading(false);
+    setTimeout(() => {
+      setProgress(0);
+    }, 1000);
+  }
+};
+```
+
+#### Download Session Input Function
+- **Purpose**: Downloads session input data for a specific client and session.
+- **API Endpoint**: `/AdminApi/DownloadInput`.
+- **Progress Handling**: Updates `progress` state based on download progress.
+- **Error Handling**: Logs errors to the console and resets progress state after completion.
+
+```javascript
+const downloadSessionInput = async (clientId, sessionId) => {
+  setDownloadLoading(true);
+  try {
+    const api = import.meta.env.VITE_BASE_URL + "/AdminApi/DownloadInput";
+    const res = await axios.post(
+      api,
+      { clientId, sessionId },
+      {
+        responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+          setProgress(progress);
+        },
+      }
+    );
+    await downloadBlobFile(res.data, "session_input");
+  } catch (err) {
+    console.log("error :", err);
+  } finally {
+    setDownloadLoading(false);
+    setTimeout(() => {
+      setProgress(0);
+    }, 1000);
+  }
+};
+```
+
+#### Download Live Data Function
+- **Purpose**: Downloads live data for a specific client.
+- **API Endpoint**: `/AdminApi/DownloadLiveInput`.
+- **Progress Handling**: Updates `progress` state based on download progress.
+- **Error Handling**: Logs errors to the console and resets progress state after completion.
+
+```javascript
+const downloadLiveData = async (clientId) => {
+  setDownloadLoading(true);
+  try {
+    const api = import.meta.env.VITE_BASE_URL + "/AdminApi/DownloadLiveInput";
+    const res = await axios.post(
+      api,
+      { clientId },
+      {
+        responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+          setProgress(progress);
+        },
+      }
+    );
+    await downloadBlobFile(res.data, "live_data");
+  } catch (err) {
+    console.log("error :", err);
+  } finally {
+    setDownloadLoading(false);
+    setTimeout(() => {
+      setProgress(0);
+    }, 1000);
+  }
+};
+```
+
+#### Download Back Up Function
+- **Purpose**: Downloads a backup for a specific client and session.
+- **API Endpoint**: `/AdminApi/DownloadBackup`.
+- **Progress Handling**: Updates `progress` state based on download progress.
+- **Error Handling**: Logs errors to the console and resets progress state after completion.
+
+```javascript
+const downloadBackUp = async (clientId, sessionId) => {
+  setDownloadLoading(true);
+  try {
+    const api = import.meta.env.VITE_BASE_URL + "/AdminApi/DownloadBackup";
+    const res = await axios.post(
+      api,
+      { clientId, sessionId },
+      {
+        responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+          setProgress(progress);
+        },
+      }
+    );
+    await downloadBlobFile(res.data, "back_up");
+  } catch (err) {
+    console.log("error :", err);
+  } finally {
+    setDownloadLoading(false);
+    setTimeout(() => {
+      setProgress(0);
+    }, 1000);
+  }
+};
+```
+
+#### Restore Back Up Function
+- **Purpose**: Restores a backup for a specific client and session, optionally specifying location and provider groups.
+- **API Endpoint**: `/AdminApi/RestoreBackupFromFromSession`.
+- **Error Handling**: Logs errors to the console.
+
+```javascript
+const restoreBackUp = async (clientId, sessionId, locationGroups = null, providerGroups = null) => {
+  setDownloadLoading(true);
+  try {
+    const api = import.meta.env.VITE_BASE_URL + "/AdminApi/RestoreBackupFromFromSession";
+    const restoreType = "Full"; // or 'Partial' based on your requirement
+    const res = await axios.post(api, { clientId, sessionId, restoreType, locationGroups, providerGroups });
+    console.log(res);
+  } catch (err) {
+    console.log("error :", err);
+  } finally {
+    setDownloadLoading(false);
+  }
+};
+```
+
+#### Exported Functions and Data
+- **Functions**: A collection of functions to be used by other components.
+- **Data**: `downloadLoading` and `progress` states.
+
+```javascript
+let fns = {
+  downloadHelp,
+  downloadSessionResults,
+  downloadSessionInput,
+  downloadLiveData,
+  downloadBackUp,
+  restoreBackUp,
+};
+
+return { data, fns };
+```
+
